@@ -46,7 +46,7 @@ class CopyrightHistogramProcessPost extends FO_Plugin
   {
     $this->Name = "ajax-copyright-hist";
     $this->Title = TITLE_copyrightHistogramProcessPost;
-    $this->DBaccess = PLUGIN_DB_READ;
+    $this->DBaccess = PLUGIN_DB_WRITE;
     $this->OutputType = 'JSON';
     $this->LoginFlag = 0;
     $this->NoMenu = 0;
@@ -87,11 +87,10 @@ class CopyrightHistogramProcessPost extends FO_Plugin
 
 
     /* check upload permissions */
-    if (!(($action == "getData" || $action == "getDeactivatedData") &&
-        ($this->uploadDao->isAccessible($upload, Auth::getGroupId())) ||
-        ($this->uploadDao->isEditable($upload, Auth::getGroupId())))) {
-      $permDeniedText = _("Permission Denied");
-      return "<h2>$permDeniedText</h2>";
+    if (!$this->uploadDao->isAccessible($upload, Auth::getGroupId()))
+    {
+      $text = _("Permission Denied");
+      return "<h2>$text</h2>";
     }
     $this->uploadtree_tablename = $this->uploadDao->getUploadtreeTableName($upload);
 
@@ -112,6 +111,7 @@ class CopyrightHistogramProcessPost extends FO_Plugin
       case "undodecision":
         return $this->doUndoDecision($decision, $pfile, $type);
     }
+
   }
 
   /**
@@ -154,10 +154,9 @@ class CopyrightHistogramProcessPost extends FO_Plugin
     $aaData = array();
     if (!empty($rows))
     {
-      $rw = $this->uploadDao->isEditable($upload, Auth::getGroupId());
       foreach ($rows as $row)
       {
-        $aaData [] = $this->fillTableRow($row, $item, $upload, $agent_pk, $type,$listPage, $filter, $activated, $rw);
+        $aaData [] = $this->fillTableRow($row, $item, $upload, $agent_pk, $type,$listPage, $filter, $activated);
       }
     }
 
@@ -289,27 +288,20 @@ class CopyrightHistogramProcessPost extends FO_Plugin
   }
 
 
-  private function getTableRowAction($hash, $uploadTreeId, $upload, $type, $activated = true, $rw = true)
+  private function getTableRowAction($hash, $uploadTreeId, $upload, $type, $activated = true)
   {
-    if($rw)
+    $act = "<img";
+    if(!$activated)
     {
-      $act = "<img";
-      if(!$activated)
-      {
-        $act .= " hidden='true'";
-      }
-      $act .= " id='delete$type$hash' onClick='delete$type($upload,$uploadTreeId,\"$hash\",\"$type\");' class=\"delete\" src=\"images/space_16.png\">";
-      $act .= "<span";
-      if($activated) {
-        $act .= " hidden='true'";
-      }
-      $act .= " id='update$type$hash'>deactivated [<a href=\"#\" id='undo$type$hash' onClick='undo$type($upload,$uploadTreeId,\"$hash\",\"$type\");return false;'>Undo</a>]</span>";
-      return $act;
+      $act .= " hidden='true'";
     }
-    if(!$activated) {
-      return "deactivated";
+    $act .= " id='delete$type$hash' onClick='delete$type($upload,$uploadTreeId,\"$hash\",\"$type\");' class=\"delete\" src=\"images/space_16.png\">";
+    $act .= "<span";
+    if($activated) {
+      $act .= " hidden='true'";
     }
-    return "";
+    $act .= " id='update$type$hash'>deactivated [<a href=\"#\" id='undo$type$hash' onClick='undo$type($upload,$uploadTreeId,\"$hash\",\"$type\");return false;'>Undo</a>]</span>";
+    return $act;
   }
 
   /**
@@ -324,7 +316,7 @@ class CopyrightHistogramProcessPost extends FO_Plugin
    * @return array
    * @internal param bool $normalizeString
    */
-  private function fillTableRow($row, $uploadTreeId, $upload, $agentId, $type,$listPage, $filter = "", $activated = true, $rw = true)
+  private function fillTableRow($row, $uploadTreeId, $upload, $agentId, $type,$listPage, $filter = "", $activated = true)
   {
     $hash = $row['hash'];
     $output = array('DT_RowId' => "$upload,$uploadTreeId,$hash,$type" );
@@ -338,14 +330,10 @@ class CopyrightHistogramProcessPost extends FO_Plugin
     $link .= $urlArgs . "'>" . $row['copyright_count'] . "</a>";
     $output['0'] = $link;
     $output['1'] = convertToUTF8($row['content']);
-    $output['2'] = $this->getTableRowAction($hash, $uploadTreeId, $upload, $type, $activated, $rw);
-    if($rw && $activated)
+    $output['2'] = $this->getTableRowAction($hash, $uploadTreeId, $upload, $type, $activated);
+    if($activated)
     {
       $output['3'] = "<input type='checkbox' class='deleteBySelect$type' id='deleteBySelect$type$hash' value='".$upload.",".$uploadTreeId.",".$hash.",".$type."'>";
-    }
-    else
-    {
-        $output['3'] = "";
     }
     return $output;
   }
