@@ -153,14 +153,11 @@ class ReadmeOssAgent extends Agent
   {
     $outData = "";
     foreach($dataForReadME as $statements) {
-      if($extract == 'text') {
-        $outData .= $statements["content"] . $break;
-      }
-      $outData .= $statements[$extract] . $break;
-      if(!empty($addSeparator)) {
-        $outData .= $addSeparator . $break;
-      }
+     $outData .= $statements[$extract] . $break;
+     if(!empty($addSeparator)) {
+       $outData .= $addSeparator . $break;
      }
+    }
     return $outData;
   }
 
