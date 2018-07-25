@@ -162,7 +162,7 @@ function GetLicenseList($uploadtree_pk, $upload_pk, $showContainer, $excluding, 
       {
         if ($showContainer)
         {
-          print($fileName."\n");
+          print($filename."\n");
         }
       }
     }
