@@ -1,6 +1,6 @@
 <?php
 /*
- Copyright (C) 2014-2018, Siemens AG
+ Copyright (C) 2014-2017, Siemens AG
  Author: Daniele Fognini, Johannes Najjar
 
  This program is free software; you can redistribute it and/or
@@ -228,14 +228,7 @@ class AjaxClearingView extends FO_Plugin
         if (isset($id))
         {
           list ($uploadTreeId, $licenseId) = explode(',', $id);
-          $what = GetParm("columnId", PARM_INTEGER);
-          if($what==2){
-            $what = 'reportinfo';
-          }elseif($what==3){
-            $what = 'acknowledgement';
-          }else{
-            $what = 'comment';
-          }
+          $what = GetParm("columnId", PARM_INTEGER)==3 ? 'comment' : 'reportinfo';
           $changeTo = GetParm("value", PARM_RAW);
           $this->clearingDao->updateClearingEvent($uploadTreeId, $userId, $groupId, $licenseId, $what, $changeTo);
         }
@@ -293,7 +286,6 @@ class AjaxClearingView extends FO_Plugin
       $types = $this->getAgentInfo($clearingResult, $uberUri, $uploadTreeId);
       $reportInfo = "";
       $comment = "";
-      $acknowledgement = "";
 
       if ($clearingResult->hasClearingEvent())
       {
@@ -301,7 +293,6 @@ class AjaxClearingView extends FO_Plugin
         $types[] = $this->getEventInfo($licenseDecisionEvent, $uberUri, $uploadTreeId, $licenseEventTypes);
         $reportInfo = $licenseDecisionEvent->getReportinfo();
         $comment = $licenseDecisionEvent->getComment();
-        $acknowledgement = $licenseDecisionEvent->getAcknowledgement();
       }
 
       $licenseShortNameWithLink = $this->urlBuilder->getLicenseTextUrl($clearingResult->getLicenseRef());
@@ -319,16 +310,13 @@ class AjaxClearingView extends FO_Plugin
       $detectorType = $this->licenseDao->getLicenseById($clearingResult->getLicenseId(), $groupId)->getDetectorType();
       $id = "$uploadTreeId,$licenseId";
       $reportInfoField = $this->getBuildClearingsForSingleFile($uploadTreeId, $licenseId, $reportInfo, 2, $detectorType);
-      $acknowledgementField = $this->getBuildClearingsForSingleFile($uploadTreeId, $licenseId, $acknowledgement, 3);
-      $commentField = $this->getBuildClearingsForSingleFile($uploadTreeId, $licenseId, $comment, 4);
-
+      $commentField = $this->getBuildClearingsForSingleFile($uploadTreeId, $licenseId, $comment, 3);
       $table[$licenseShortName] = array('DT_RowId' => $id,
           '0' => $actionLink,
           '1' => $licenseShortNameWithLink,
           '2' => implode("<br/>", $types),
           '3' => $reportInfoField,
-          '4' => $acknowledgementField,
-          '5' => $commentField);
+          '4' => $commentField);
     }
 
     foreach ($removedLicenses as $licenseShortName => $clearingResult)
@@ -350,8 +338,7 @@ class AjaxClearingView extends FO_Plugin
             '1' => $licenseShortNameWithLink,
             '2' => implode("<br/>", $agents),
             '3' => "-",
-            '4' => "-",
-            '5' => "-");
+            '4' => "-");
       }
     }
 

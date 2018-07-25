@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright (C) 2014-2018, Siemens AG
+Copyright (C) 2014-2015, Siemens AG
 Author: Johannes Najjar
 
 This program is free software; you can redistribute it and/or
@@ -50,8 +50,6 @@ class ClearingDecisionBuilderTest extends \PHPUnit_Framework_TestCase
   /** @var string */
   private $reportinfo;
   /** @var string */
-  private $acknowledgement;
-  /** @var string */
   private $scope;
   /** @var int */
   private $timeStamp;
@@ -72,7 +70,6 @@ class ClearingDecisionBuilderTest extends \PHPUnit_Framework_TestCase
     $this->type = DecisionTypes::TO_BE_DISCUSSED;
     $this->comment = "Test comment";
     $this->reportinfo = "Test reportinfo";
-    $this->acknowledgement = "Test acknowledgement";
     $this->scope = DecisionScopes::ITEM;
     $this->timeStamp = mktime(11, 14, 15, 7, 28, 2012);
 

@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright (C) 2014-2018, Siemens AG
+Copyright (C) 2014-2015, Siemens AG
 Author: Johannes Najjar, Steffen Weber
 
 This program is free software; you can redistribute it and/or
@@ -45,8 +45,6 @@ class ClearingDecision extends Object
   private $comment;
   /** @var string */
   private $reportinfo;
-  /** @var string */
-  private $acknowledgement;
   /** @var int */
   private $scope;
   /** @var int */
@@ -65,10 +63,10 @@ class ClearingDecision extends Object
    * @param ClearingEvent[] $clearingEvents
    * @param string $comment
    * @param string $reportinfo
-   * @param string $acknowledgement
    * @internal param $licenses
    */
-  public function __construct($sameFolder, $clearingId, $uploadTreeId, $pfileId, $userName, $userId, $type, $scope, $ts_added, $clearingEvents, $comment = "", $reportinfo = "", $acknowledgement = "")
+  public function __construct($sameFolder, $clearingId, $uploadTreeId, $pfileId, $userName, $userId, $type,
+          $scope, $ts_added, $clearingEvents, $comment = "", $reportinfo = "")
   {
     $this->sameFolder = $sameFolder;
     $this->clearingId = $clearingId;
@@ -81,7 +79,6 @@ class ClearingDecision extends Object
     $this->timeStamp = $ts_added;
     $this->comment = $comment;
     $this->reportinfo = $reportinfo;
-    $this->acknowledgement = $acknowledgement;
     $this->clearingEvents = $clearingEvents;
   }
 
@@ -161,14 +158,6 @@ class ClearingDecision extends Object
   public function getReportinfo()
   {
     return $this->reportinfo;
-  }
-
-  /**
-   * @return string
-   */
-  public function getAcknowledgement()
-  {
-    return $this->acknowledgement;
   }
 
   /**
