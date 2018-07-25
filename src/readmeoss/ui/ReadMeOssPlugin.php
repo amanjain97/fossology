@@ -1,6 +1,6 @@
 <?php
 /*
- Copyright (C) 2014-2018 Siemens AG
+ Copyright (C) 2014-2015 Siemens AG
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -123,12 +123,7 @@ class ReadMeOssPlugin extends DefaultPlugin
     if (!empty($scheduled)) {
       return array($scheduled['job_pk'],$scheduled['jq_pk']);
     }
-    if(empty($jqCmdArgs)) {
-      $jobName = $upload->getFilename();
-    } else {
-      $jobName = "Multi File ReadmeOSS";
-    }
-    $jobId = JobAddJob($userId, $groupId, $jobName, $uploadId);
+    $jobId = JobAddJob($userId, $groupId, $upload->getFilename(), $uploadId);
     $error = "";
     $jobQueueId = $readMeOssAgent->AgentAdd($jobId, $uploadId, $error, array(), $jqCmdArgs);
     if ($jobQueueId<0)
