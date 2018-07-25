@@ -78,7 +78,7 @@ if($showUsage)
 }
 else
 { 
-  if (file_exists($SchemaFilePath) && !@unlink($SchemaFilePath))
+  if (file_exists($SchemaFilePath) && !@nlink($SchemaFilePath))
   {
     $FailMsg = "Existing schema data file ($SchemaFilePath) could not be removed.";
   }
