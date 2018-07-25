@@ -26,7 +26,6 @@ use Symfony\Component\HttpFoundation\Request;
 class UploadSrvPage extends UploadPageBase
 {
   const NAME = 'upload_srv_files';
-  const NAME_PARAM = 'name';
   const SOURCE_FILES_FIELD = 'sourceFiles';
 
   public function __construct()
@@ -139,7 +138,6 @@ class UploadSrvPage extends UploadPageBase
   protected function handleView(Request $request, $vars)
   {
     $vars['sourceFilesField'] = self::SOURCE_FILES_FIELD;
-    $vars['nameField'] = self::NAME_PARAM;
     $vars['hostlist'] = HostListOption();
     return $this->render("upload_srv.html.twig", $this->mergeWithDefault($vars));
   }
@@ -189,15 +187,10 @@ class UploadSrvPage extends UploadPageBase
       return array(false, $text, $description);
     }
 
-    $name = $request->get(self::NAME_PARAM);
-    if (empty($name)) 
+    $shortName = basename($sourceFiles);
+    if (empty($shortName))
     {
-      $name = basename($sourceFiles);
-    }
-    $shortName = basename($name);
-    if (empty($shortName)) 
-    {
-      $shortName = $name;
+      $shortName = $sourceFiles;
     }
     if(strcmp($host,"localhost"))
     {
