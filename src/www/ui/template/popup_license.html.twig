@@ -31,9 +31,9 @@
           <h2>{{ 'Reference URL'|trans }}:</h2>
           <a href="{{ url }}" target="_blank">{{ url|e }}</a>
         {% endif %}
-        {% if risk is defined %}
+        {% if risk %}
           <h2>{{ 'Risk level'|trans }}:</h2>
-            <div class="riskLevelBox riskLevelBackgroud{{ risk }}"> {{ risk }} </div>
+          {{ risk }}
         {% endif %}
         {% if text %}
           <h2>{{ 'License Text'|trans }}</h2>

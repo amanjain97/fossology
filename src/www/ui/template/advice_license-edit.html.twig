@@ -48,10 +48,3 @@
 </form>  
   
 {% endblock %}
-
-
-{% block foot %}
-  {{ parent() }}
-  {% set riskSelectId = 'risk' %}
-  <script>{% include "riskLevel_select.js.twig" %}</script>
-{% endblock %}
