@@ -45,12 +45,12 @@ int TraverseStartClean()
 
 void testTraverseStartNormal()
 {
-  Filename = "../testdata/testthree.zip";
+  Filename = "../test-data/testdata4unpack/threezip.zip";
   deleteTmpFiles("./test-result/");
-  exists = file_dir_exists("./test-result/testthree.zip.dir/testtwo.zip.dir/test.zip.dir/ununpack");
+  exists = file_dir_exists("./test-result/threezip.zip.dir/twozip.zip.dir/Desktop.zip.dir/record.txt");
   FO_ASSERT_EQUAL(exists, 0); // ./test-result/ is not existing
   TraverseStart(Filename, Label, NewDir, Recurse);
-  exists = file_dir_exists("./test-result/testthree.zip.dir/testtwo.zip.dir/test.zip.dir/ununpack");
+  exists = file_dir_exists("./test-result/threezip.zip.dir/twozip.zip.dir/Desktop.zip.dir/record.txt");
   FO_ASSERT_EQUAL(exists, 1); // ./test-result/ is existing
 }
 
@@ -59,7 +59,7 @@ void testTraverseStartNormal()
  */
 void testTraverseStartDir()
 {
-  Filename = "../testdata/";
+  Filename = "../test-data/testdata4unpack/testdir/";
   deleteTmpFiles("./test-result/");
   exists = file_dir_exists("./test-result/test.jar.dir/ununpack");
   FO_ASSERT_EQUAL(exists, 0); // ./test-result/ is not existing

@@ -51,13 +51,13 @@ int TraverseClean()
  */
 void testTraverseNormal4Package()
 {
-  Filename = "../testdata/testthree.zip";
-  Basename = "testthree.zip";
+  Filename = "../test-data/testdata4unpack/threezip.zip"; 
+  Basename = "threezip.zip";
   deleteTmpFiles(NewDir);
   ParentInfo PITest = {0, 1287725739, 1287725739, 0, 0};
   PI = &PITest;
   Result = Traverse(Filename,Basename,Label,NewDir,Recurse,PI);
-  exists = file_dir_exists("./test-result/testthree.zip.dir/testtwo.zip.dir/test.zip.dir/ununpack");
+  exists = file_dir_exists("./test-result/threezip.zip.dir/Desktop.zip.dir/record.txt");
   FO_ASSERT_EQUAL(exists, 1); // is existing
   FO_ASSERT_EQUAL(Result, 1); // Filename is one containter
 }
@@ -67,39 +67,35 @@ void testTraverseNormal4Package()
  */
 void testTraverseNormal4Package2()
 {
-  Filename = "../testdata/test.ar";
-  Basename = "test.ar";
+  Filename = "../test-data/testdata4unpack/libfossagent.a";
+  Basename = "libfossagent.a";
   deleteTmpFiles(NewDir);
   ParentInfo PITest = {0, 1287725739, 1287725739, 0, 0};
   PI = &PITest;
   Result = Traverse(Filename,Basename,Label,NewDir,Recurse,PI);
-  exists = file_dir_exists("./test-result/test.ar.dir/test.tar");
+  exists = file_dir_exists("./test-result/libfossagent.a.dir/libfossagent.o");
   FO_ASSERT_EQUAL(exists, 1); //  is existing
   FO_ASSERT_EQUAL(Result, 1); // Filename is one containter
 }
 
 /**
- * @brief normal test for one directory
+ * @brief normal test for one directory 
  */
 void testTraverseNormal4Dir()
 {
-  int returnval;
-  Filename = "../testdata";
-  Basename = NULL;
+  Filename = "../test-data/testdata4unpack/testdir";
+  Basename = "";
   deleteTmpFiles(NewDir);
-  MkDirs("./test-result/testdata");
-  char *cmdline = "/bin/cp -r ../testdata/* ./test-result/testdata/";
-  returnval = system(cmdline); // cp ../testdata to ./test-result/testdata/
-  if(returnval > -1)
-  {
-    ParentInfo PITest = {0, 1287725739, 1287725739, 0, 0};
-    PI = &PITest;
-    Label = "Called by dir/wait";
-    Result = Traverse(Filename,Basename,Label,NewDir,Recurse,PI);
-    exists = file_dir_exists("./test-result/testdata/test.jar.dir/ununpack");
-    FO_ASSERT_EQUAL(exists, 1); // is existing
-    FO_ASSERT_EQUAL(Result, 1); // Filename is one containter
-  }
+  MkDirs("./test-result/test-data/testdata4unpack/testdir");
+  char *cmdline = "/bin/cp -r ../test-data/testdata4unpack/testdir/* ./test-result/test-data/testdata4unpack/testdir";
+  system(cmdline); // cp ../test-data/testdata4unpack/testdir to ./test-result/
+  ParentInfo PITest = {0, 1287725739, 1287725739, 0, 0};
+  PI = &PITest;
+  Label = "Called by dir/wait";
+  Result = Traverse(Filename,Basename,Label,NewDir,Recurse,PI);
+  exists = file_dir_exists("./test-result/test-data/testdata4unpack/testdir/test.jar.dir/ununpack");
+  FO_ASSERT_EQUAL(exists, 1); // is existing
+  FO_ASSERT_EQUAL(Result, 1); // Filename is one containter
 }
 
 /**
@@ -107,13 +103,13 @@ void testTraverseNormal4Dir()
  */
 void testTraverseNormal4Rpm()
 {
-  Filename = "../testdata/test.rpm";
-  Basename = "test.rpm";
+  Filename = "../test-data/testdata4unpack/libgnomeui2-2.24.3-1pclos2010.src.rpm";
+  Basename = "libgnomeui2-2.24.3-1pclos2010.src.rpm";
   deleteTmpFiles(NewDir);
   ParentInfo PITest = {0, 1287725739, 1287725739, 0, 0};
   PI = &PITest;
   Result = Traverse(Filename,Basename,Label,NewDir,Recurse,PI);
-  exists = file_dir_exists("./test-result/test.rpm.unpacked.dir/usr/share/fossology/bsam/VERSION");
+  exists = file_dir_exists("./test-result/libgnomeui2-2.24.3-1pclos2010.src.rpm.unpacked.dir/pclos-libgnomeui2.spec");
   FO_ASSERT_EQUAL(exists, 1); // is existing
   FO_ASSERT_EQUAL(Result, 1); // Filename is one containter
 }
@@ -123,7 +119,7 @@ void testTraverseNormal4Rpm()
  */
 void testTraverseNullParams()
 {
-  Filename = "";
+  Filename = ""; 
   Basename = "";
   deleteTmpFiles(NewDir);
   ParentInfo PITest = {0, 1287725739, 1287725739, 0, 0};

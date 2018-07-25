@@ -49,7 +49,6 @@ uninstall:
 
 clean:
 	$(call DIR_LOOP,clean)
-	$(MAKE) -s -C $(TESTDIR) clean
 	rm -f VERSION
 
 .PHONY: all test coverage VERSIONFILE install uninstall clean

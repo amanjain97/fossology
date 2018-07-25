@@ -1,7 +1,6 @@
 #!/bin/bash
 # FOSSology dbcreate script
 # Copyright (C) 2008 Hewlett-Packard Development Company, L.P.
-# Copyright (C) 2018 Siemens AG
 #
 # This script checks to see if the the fossology db exists and if not
 # then creates it.
@@ -67,7 +66,7 @@ else
    fi
   
    echo "DB: before su to postgres"
-   su postgres -c "psql < ./$fossSql"
+   su postgres -c "psql < $TESTROOT/$fossSql"
    if [ $? != 0 ] ; then
       echo "ERROR: Database failed during configuration."
       exit 3

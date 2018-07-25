@@ -22,7 +22,7 @@ all: VERSIONFILE
 	$(call DIR_LOOP, )
 
 test: all
-	$(call TESTDIR_LOOP,test)
+	$(call DIR_LOOP,test)
 
 coverage: all
 	@echo "nothing to do"
@@ -52,7 +52,6 @@ uninstall:
 
 clean:
 	$(call DIR_LOOP,clean)
-	$(call TESTDIR_LOOP,clean)
 	rm -f VERSION
 
 .PHONY: all test coverage VERSIONFILE install uninstall clean

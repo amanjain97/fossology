@@ -46,11 +46,11 @@ int CopyFileClean()
 /* test functions */
 
 /**
- * @brief copy directory
+ * @brief copy directory 
  */
 void testCopyFileNormalFile()
 {
-  Src = "../testdata/test.iso";
+  Src = "../test-data/testdata4unpack/imagefile.iso";
   deleteTmpFiles("./test-result/");
   strcpy(Dst, "./test-result/hello");
   stat(Src, &statSrc);
@@ -61,11 +61,11 @@ void testCopyFileNormalFile()
 }
 
 /**
- * @brief copy directory
+ * @brief copy directory 
  */
 void testCopyFileNormalDir()
 {
-  Src = "../testdata";
+  Src = "../test-data/testdata4unpack/testdir";
   strcpy(Dst, "./test-result/hello");
   deleteTmpFiles("./test-result/");
   Result = CopyFile(Src, Dst);

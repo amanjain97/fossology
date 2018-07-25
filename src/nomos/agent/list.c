@@ -1,6 +1,5 @@
 /***************************************************************
  Copyright (C) 2006-2013 Hewlett-Packard Development Company, L.P.
- Copyright (C) 2018 Siemens AG
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -599,7 +598,6 @@ static void listDoubleSize(list_t *l) {
     l->items = newptr;
   }
   l->size *= 2;
-  memFree(newptr, MTAG_DOUBLED);
   return;
 }
 

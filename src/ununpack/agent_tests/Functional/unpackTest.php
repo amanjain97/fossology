@@ -101,8 +101,7 @@ class cliParamsTest extends PHPUnit_Framework_TestCase {
 		if (!chdir("..")) {
 			$this->fail("FATAL! could not cd to agent_tests\n");
 		}
-		$rtn = NULL;
-		$last = exec("../agent/copyright -t 2>&1", $accuracy, $rtn);
+		$last = exec("../agent/copyright -t 2>&1", $accuracy, $rtn=NULL);
 		//print "testT: last is:$last\naccuracy is:\n";
 		//print_r($accuracy) . "\n";
     $size = count($accuracy);

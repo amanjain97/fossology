@@ -35,9 +35,9 @@ class TestClearedGetter extends ClearedGetterCommon
   protected function getStatements($uploadId, $uploadTreeTableName, $userId = null, $groupId=null)
   {
     return array(
-      array("licenseId" => "371", "risk" => "5", "content" => "1", "text" => "t1", "comments" => "c1", "uploadtree_pk" => 1),
-      array("licenseId" => "213", "risk" => "4", "content" => "1", "text" => "t2", "comments" => "c1", "uploadtree_pk" => 2),
-      array("licenseId" => "243", "risk" => "4", "content" => "2", "text" => "t3", "comments" => "c3", "uploadtree_pk" => 3),
+      array("content" => "1", "text" => "t1", "comments" => "c1", "uploadtree_pk" => 1),
+      array("content" => "1", "text" => "t2", "comments" => "c1", "uploadtree_pk" => 2),
+      array("content" => "2", "text" => "t3", "comments" => "c3", "uploadtree_pk" => 3),
     );
   }
 }
@@ -50,8 +50,8 @@ class WeirdCharClearedGetter extends ClearedGetterCommon
   }
 
   protected function getStatements($uploadId, $uploadTreeTableName, $userId = null, $groupId=null){}
-
-  public function getCleared($uploadId, $groupId=null, $extended = true, $agentcall = NULL)
+  
+  public function getCleared($uploadId, $groupId=null)
   {
     return array(
       array("good" => "漢", "esc" => "escape", "uml" => ' ü ')
@@ -87,7 +87,7 @@ class ClearedComonReportTest extends \PHPUnit_Framework_TestCase
   public function testGetFileNames()
   {
     $this->clearedGetterTest = new TestClearedGetter();
-
+        
     $uploadId = 1;
     $parentId = 112;
     $uploadTreeTableName = "ut";
@@ -121,16 +121,12 @@ class ClearedComonReportTest extends \PHPUnit_Framework_TestCase
     $expected = array(
       "statements" => array(
         array(
-          "licenseId" => "371",
-          "risk" => "5",
           "content" => "1",
           "text" => "t1",
           "comments" => "c1",
           "files" => array("a/1", "a/2")
         ),
         array(
-          "licenseId" => "243",
-          "risk" => "4",
           "content" => "2",
           "text" => "t3",
           "comments" => "c3",
@@ -179,24 +175,18 @@ class ClearedComonReportTest extends \PHPUnit_Framework_TestCase
     $expected = array(
       "statements" => array(
         array(
-          "licenseId" => "371",
-          "risk" => "5",
           "content" => "1",
           "text" => "t1",
           "comments" => "c1",
           "files" => array("a/1")
         ),
         array(
-          "licenseId" => "213",
-          "risk" => "4",
           "content" => "1",
           "text" => "t2",
           "comments" => "c1",
           "files" => array("a/2")
         ),
         array(
-          "licenseId" => "243",
-          "risk" => "4",
           "content" => "2",
           "text" => "t3",
           "comments" => "c3",
@@ -207,7 +197,7 @@ class ClearedComonReportTest extends \PHPUnit_Framework_TestCase
     $expected = arsort($expected);
     assertThat($expected, equalTo($statements));
   }
-
+  
   function testWeirdChars()
   {
     $weirdCharclearedGetter = new WeirdCharclearedGetter();

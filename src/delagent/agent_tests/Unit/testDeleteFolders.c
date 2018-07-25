@@ -1,8 +1,6 @@
 /*********************************************************************
 Copyright (C) 2011 Hewlett-Packard Development Company, L.P.
 
-Copyright (C) 2018 Siemens AG
-
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
 version 2 as published by the Free Software Foundation.
@@ -35,17 +33,15 @@ static PGresult *result = NULL;
  */
 void testDeleteFolders()
 {
-  long FolderId = 3;
+  long FolderId = 5;
   //char *DBConfFile = NULL;  /* use default Db.conf */
   char *ErrorBuf;
-  int rc;
 
   db_conn = fo_dbconnect(DBConfFile, &ErrorBuf);
   /** exectue the tested function */
-  rc = deleteFolder(1, FolderId, 3, 10);
+  DeleteFolder(FolderId);
 
   PQfinish(db_conn);
-  CU_ASSERT_EQUAL(rc, 0);
   CU_PASS("DeleteFolders PASS!");
 }
 
@@ -54,22 +50,20 @@ void testDeleteFolders()
  */
 void testDeleteUploads()
 {
-  long UploadId = 2;
+  long UploadId = 85;
   //char *DBConfFile = NULL;  /* use default Db.conf */
   char *ErrorBuf;
   char sql[1024];
-  int rc;
 
   db_conn = fo_dbconnect(DBConfFile, &ErrorBuf);
   /** exectue the tested function */
-  rc = deleteUpload(UploadId, 3, 10);
-  CU_ASSERT_EQUAL(rc, 0);
+  DeleteUpload(UploadId);
 
   /* check if uploadtree records deleted */
   memset(sql, '\0', 1024);
   snprintf(sql, 1024, "SELECT * FROM uploadtree WHERE upload_fk = %ld;", UploadId);
   result = PQexec(db_conn, sql);
-  if (fo_checkPQresult(db_conn, result, sql, __FILE__, __LINE__))
+  if (fo_checkPQresult(db_conn, result, sql, __FILE__, __LINE__)) 
   {
     CU_FAIL("DeleteUploads FAIL!");
   }
@@ -92,7 +86,7 @@ void testDeleteUploads()
     CU_ASSERT_EQUAL(PQntuples(result),0);
   }
   PQclear(result);
-
+  
   PQfinish(db_conn);
   CU_PASS("DeleteUploads PASS!");
 }
@@ -102,16 +96,14 @@ void testDeleteUploads()
  */
 void testDeleteLicenses()
 {
-  long UploadId = 2;
+  long UploadId = 85;
   char *ErrorBuf;
-  int rc;
-
+  
   db_conn = fo_dbconnect(DBConfFile, &ErrorBuf);
   /** exectue the tested function */
-  rc = deleteLicense(UploadId, 10);
-
+  DeleteLicense(UploadId);
+  
   PQfinish(db_conn);
-  CU_ASSERT_EQUAL(rc, 0);
   CU_PASS("DeleteLicenses PASS!");
 }
 
@@ -124,7 +116,7 @@ CU_TestInfo testcases_DeleteFolders[] =
 #endif
 {"Testing the function DeleteFolders:", testDeleteFolders},
 {"Testing the function DeleteUploads:", testDeleteUploads},
-//{"Testing the function DeleteLicenses:", testDeleteLicenses},
+{"Testing the function DeleteLicenses:", testDeleteLicenses}, 
   CU_TEST_INFO_NULL
 };
 
