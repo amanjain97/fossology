@@ -1,7 +1,7 @@
 #! /bin/sh
 #
 # Author: Daniele Fognini, Andreas Wuerl
-# Copyright (C) 2013-2015, 2018 Siemens AG
+# Copyright (C) 2013-2015, Siemens AG
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -52,7 +52,8 @@ oneTimeSetUp()
   mkdir -p $confDir
   touch $confDir$confFile
   echo "[FOSSOLOGY]\ndepth = 0\npath = $confDir\n" >> $confDir$confFile
-  cp `pwd`/../../../../install/defconf/Db.conf $confDir/Db.conf
+  touch $confDir/Db.conf
+  echo "dbname=fossology;\nhost=localhost;\nuser=fossy;\npassword=fossy;\n" >> $confDir/Db.conf
   mkdir -p $confDir/mods-enabled/copyright
   mkdir -p $confDir/mods-enabled/ecc
   cp ../../../../VERSION $confDir/VERSION
@@ -62,7 +63,8 @@ oneTimeSetUp()
   cp $agentDir/agent/ecc $confDir/mods-enabled/ecc/ecc
   cp $agentDir/agent/ecc.conf $confDir/mods-enabled/ecc/ecc.conf
   cp $agentDir/VERSION-ecc $confDir/mods-enabled/ecc/VERSION
-  finalConf=$(/usr/bin/php ../../../testing/db/createTestDB.php -c $confDir -e)
+  /usr/bin/php ../../../testing/db/createTestDB.php -c $confDir -e > confSetup
+  finalConf=$(cat confSetup)
   _dbSetup
 }
 
@@ -70,7 +72,7 @@ oneTimeTearDown()
 {
   set PGPASSWORD=$password
   psql -c "DROP DATABASE $dbname;" postgres $user
-  rm -rf $confDir $finalConf
+  rm -rf $confDir $finalConf confSetup
 }
 
 _runcopyright()

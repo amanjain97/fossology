@@ -17,7 +17,6 @@
  */
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))).'/cli/tests/test_common.php');
-require_once (__DIR__ . "/../../../testing/db/createEmptyTestEnvironment.php");
 
 /**
  * \brief test delagent cli
@@ -25,12 +24,12 @@ require_once (__DIR__ . "/../../../testing/db/createEmptyTestEnvironment.php");
 
 class ft_DelagentTest extends PHPUnit_Framework_TestCase {
 
-  public $SYSCONF_DIR;
+  public $SYSCONF_DIR = "/usr/local/etc/fossology/";
   public $DB_NAME;
   public $PG_CONN;
   public $DB_COMMAND;
 
-  /**
+  /** 
    * \brief upload testdata
    *    prepare testdata for delagent, upload one tar file and schedule all agents
    */
@@ -92,12 +91,12 @@ class ft_DelagentTest extends PHPUnit_Framework_TestCase {
     global $SYSCONF_DIR;
     global $DB_COMMAND;
     global $DB_NAME;
-    global $REPO_NAME;
 
-    $cwd = getcwd();
-    list($test_name, $SYSCONF_DIR, $DB_NAME, $PG_CONN) = setupTestEnv($cwd, "delagent", false);
-
-    $REPO_NAME = "testDbRepo".$test_name;
+    $SYSCONF_DIR = "/usr/local/etc/fossology/";
+    $DB_NAME = "fossology";
+    $DB_COMMAND = "../../../testing/db/createTestDB.php";
+    print "Starting functional test for delagent. \n";
+    create_db();
     add_user();
     replace_repo();
     scheduler_operation();

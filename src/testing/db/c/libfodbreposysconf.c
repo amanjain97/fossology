@@ -1,6 +1,6 @@
 /* **************************************************************
  Copyright (C) 2011 Hewlett-Packard Development Company, L.P.
- Copyright (C) 2015, 2018 Siemens AG
+ Copyright (C) 2015 Siemens AG
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
@@ -351,11 +351,7 @@ char *createTestConfDir(char* cwd, char* agentName)
   fclose(testConfFile);
 
   memset(CMD, '\0', sizeof(CMD));
-  sprintf(CMD, "install -D %s/../../../../VERSION %s/VERSION", cwd, confDir);
-  rc = system(CMD);
-
-  memset(CMD, '\0', sizeof(CMD));
-  sprintf(CMD, "install -D %s/../../../../install/defconf/Db.conf %s/Db.conf", cwd, confDir);
+  sprintf(CMD, "install -D ../../../../VERSION %s/VERSION", confDir);
   rc = system(CMD);
 
   memset(CMD, '\0', sizeof(CMD));
@@ -366,10 +362,7 @@ char *createTestConfDir(char* cwd, char* agentName)
   sprintf(CMD, "ln -fs %s/agent %s/mods-enabled/%s", agentDir, confDir, agentName);
   rc = system(CMD);
 
-  if (rc != -1)
-    return confDir;
-  else
-    return NULL;
+  return confDir;
 }
 
 #if 0

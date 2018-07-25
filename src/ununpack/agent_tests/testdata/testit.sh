@@ -14,6 +14,23 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-finalConf=$(awk -F "=" '/finalConf/ {print $2}' testVariables.var | tr -d '; ')
+# Create a test config directory
 
-../../agent/ununpack -c $finalConf -Cv -d . -R -L ./$1.xml $1
+confDir="./testconf"
+confFile="/fossology.conf"
+agentDir="../.."
+
+mkdir -p $confDir
+touch $confDir$confFile
+echo "[FOSSOLOGY]\ndepth = 0\npath = $(confDir)\n" >> $confDir$confFile
+touch $confDir/Db.conf
+echo "dbname=fossology;\nhost=localhost;\nuser=fossy;\npassword=fossy;\n" >> $confDir/Db.conf
+install -D ../../../../VERSION $confDir/VERSION
+install -D $agentDir/VERSION $confDir/mods-enabled/ununpack/VERSION
+ln -fs $agentDir/agent $confDir/mods-enabled/ununpack
+
+../../agent/ununpack -c $confDir -Cv -d . -R -L ./$1.xml $1
+
+# Remove the test config directory
+
+rm -rf $confDir

@@ -25,8 +25,6 @@ use Fossology\Lib\Plugin\AgentPlugin;
 use Fossology\Lib\Util\Object;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
-include_once(__DIR__ . "/../../lib/php/common-job.php");
-
 class BulkReuser extends Object
 {
   /** @var DbManager */
@@ -36,7 +34,7 @@ class BulkReuser extends Object
   {
     $this->dbManager = $GLOBALS['container']->get('db.manager');
   }
-
+  
   public function rerunBulkAndDeciderOnUpload($uploadId, $groupId, $userId, $bulkId, $dependency)
   {
     /* @var $uploadDao UploadDao */

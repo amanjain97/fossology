@@ -72,14 +72,10 @@ class ft_cliDelagentTest extends PHPUnit_Framework_TestCase {
     global $EXE_PATH;
     global $PG_CONN;
     global $DB_NAME;
-    global $DB_CONF;
 
     $expected = "";
 
-    $db_array = parse_ini_file("$DB_CONF/Db.conf");
-    $db_user = $db_array["user"];
-
-    exec("psql -U $db_user -d $DB_NAME < ../testdata/testdb_all.sql >/dev/null");
+    exec("pg_restore -Ufossy -d $DB_NAME ../testdata/testdb_all.tar");
 
     $sql = "SELECT upload_pk, upload_filename FROM upload ORDER BY upload_pk;";
     $result = pg_query($PG_CONN, $sql);
@@ -103,14 +99,9 @@ class ft_cliDelagentTest extends PHPUnit_Framework_TestCase {
     global $EXE_PATH;
     global $PG_CONN;
     global $DB_NAME;
-    global $DB_CONF;
-
     $expected = "";
 
-    $db_array = parse_ini_file("$DB_CONF/Db.conf");
-    $db_user = $db_array["user"];
-
-    exec("psql -U $db_user -d $DB_NAME < ../testdata/testdb_all.sql >/dev/null");
+    exec("pg_restore -Ufossy -d $DB_NAME ../testdata/testdb_all.tar");
 
     $sql = "SELECT folder_pk,parent,name,description,upload_pk FROM folderlist ORDER BY name,parent,folder_pk;";
     $result = pg_query($PG_CONN, $sql);
@@ -133,14 +124,9 @@ class ft_cliDelagentTest extends PHPUnit_Framework_TestCase {
     global $EXE_PATH;
     global $PG_CONN;
     global $DB_NAME;
-    global $DB_CONF;
-
     $expected = "The upload '85' is deleted by the user 'fossy'.";
 
-    $db_array = parse_ini_file("$DB_CONF/Db.conf");
-    $db_user = $db_array["user"];
-
-    exec("psql -U $db_user -d $DB_NAME < ../testdata/testdb_all.sql >/dev/null");
+    exec("pg_restore -Ufossy -d $DB_NAME ../testdata/testdb_all.tar");
     $sql = "UPDATE upload SET user_fk = 2;";
     $result = pg_query($PG_CONN, $sql);
     pg_free_result($result);

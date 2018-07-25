@@ -58,7 +58,6 @@ testdata:
 
 clean:
 	rm -rf ununpack-Xunit.xml
-	rm -rf ../testdata/*.dir ../testdata/*.xml ../testdata/*.meta
 
 .PHONY: all test coverage clean
 
