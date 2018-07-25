@@ -66,10 +66,6 @@ class AjaxFolderContents extends DefaultPlugin
     {
       $filterResults[$content] = $results[$content];
     }
-    if(empty($filterResults))
-    {
-      $filterResults["-1"] = "No removable content found";
-    }
     return new JsonResponse($filterResults);
   }
   
