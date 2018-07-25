@@ -1,6 +1,6 @@
 <?php
 /***********************************************************
- * Copyright (C) 2014-2018, Siemens AG
+ * Copyright (C) 2014-2015, Siemens AG
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -87,8 +87,7 @@ class DeciderAgentPlugin extends AgentPlugin
           $rulebits |= 0x2;
           break;
         case 'reuseBulk':
-          $dependencies[] = 'agent_nomos';
-          $dependencies[] = 'agent_monk';
+          $dependencies[] = 'agent_reuser';
           $rulebits |= 0x4;
           break;
         case 'wipScannerUpdates':
