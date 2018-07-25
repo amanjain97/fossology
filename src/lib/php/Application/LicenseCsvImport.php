@@ -141,26 +141,25 @@ class LicenseCsvImport {
   {
     $log = "Text of '$row[shortname]' already used for '$sameText[rf_shortname]'";
     $stmt = __METHOD__;
-    $sql = "UPDATE license_ref SET ";
+    $sql = 'UPDATE license_ref SET ';
     $param = array($sameText['rf_pk']);
     if(!empty($row['source']) && empty($sameText['rf_source']))
     {
-      $param[] = $row['source'];
       $stmt .= '.updSource';
-      $sql .= " rf_source=$".count($param);
+      $sql .= ' rf_source=$2';
+      $param[] = $row['source'];
       $log .= ', updated the source';
     }
-    if(!empty($row['risk']) && $row['risk']!==$sameText['rf_risk'])
+    if(false!==$row['risk'] && $row['risk']!==$sameText['rf_risk'])
     {
-      $param[] = $row['risk'];
       $stmt .= '.updRisk';
-      $sql .= count($param)==3 ? ", rf_risk=$".count($param) : "rf_risk=$".count($param);
+      $sql .= count($param)==2 ? ', rf_risk=$3' : 'rf_risk=$';
+      $param[] = $row['risk'];
       $log .= ', updated the risk level';
     }
     if(count($param)>1)
     {
-      $sql .=" WHERE rf_pk=$1";
-      $this->dbManager->prepare($stmt, $sql);
+      $this->dbManager->prepare("$sql WHERE rf_pk=$1", $stmt);
       $res = $this->dbManager->execute($stmt,$param);
       $this->dbManager->freeResult($res);
     }  
@@ -175,9 +174,6 @@ class LicenseCsvImport {
   {
     /* @var $dbManager DbManager */
     $dbManager = $this->dbManager;
-    if(empty($row['risk'])){
-      $row['risk'] = 0;
-    }
     if ($this->getKeyFromShortname($row['shortname'])!==false)
     {
       return "Shortname '$row[shortname]' already in DB (id=".$this->getKeyFromShortname($row['shortname']).")";
@@ -232,4 +228,4 @@ class LicenseCsvImport {
     return $this->nkMap[$shortname];
   }
 
-}
+} 
