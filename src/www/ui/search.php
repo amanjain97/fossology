@@ -83,7 +83,6 @@ class search extends FO_Plugin
   {
     global $PG_CONN;
     $UploadtreeRecs = array();  // uploadtree record array to return
-    $totalUploadtreeRecs = array();  // total uploadtree record array to return
     $NeedTagfileTable = true;
     $NeedTaguploadtreeTable = true;
 
@@ -102,7 +101,7 @@ class search extends FO_Plugin
  
        /* Check upload permission */
        if (!$this->uploadDao->isAccessible($upload_pk, Auth::getGroupId())) {
-        return array($UploadtreeRecs, $totalUploadtreeRecs);
+        return $UploadtreeRecs;
       }
     }
 
@@ -131,7 +130,7 @@ class search extends FO_Plugin
       {
         /* tag doesn't match anything, so no results are possible */
         pg_free_result($result);
-        return array($UploadtreeRecs, $totalUploadtreeRecs);
+        return $UploadtreeRecs;
       }
 
       /* Make a list of the tag_pk's that satisfy the criteria */
@@ -267,20 +266,6 @@ class search extends FO_Plugin
 
     $Offset = $Page * $this->MaxPerPage;
     $SQL .= " ORDER BY ufile_name, uploadtree.pfile_fk";
-    $result = pg_query($PG_CONN, $SQL);
-    DBCheckResult($result, $SQL, __FILE__, __LINE__);
-    if (pg_num_rows($result)) 
-    {
-      while ($row = pg_fetch_assoc($result))
-      {
-        if (!$this->uploadDao->isAccessible($row['upload_fk'], Auth::getGroupId())) {
-          continue;
-        }
-        $totalUploadtreeRecs[] = $row;
-      }
-    }
-    pg_free_result($result);
-
     $SQL .= " LIMIT $this->MaxPerPage OFFSET $Offset;";
     $result = pg_query($PG_CONN, $SQL);
     DBCheckResult($result, $SQL, __FILE__, __LINE__);
@@ -295,7 +280,7 @@ class search extends FO_Plugin
       }
     }
     pg_free_result($result);
-    return array($UploadtreeRecs, $totalUploadtreeRecs);
+    return($UploadtreeRecs);
   } // GetResults()
 
 
@@ -426,13 +411,11 @@ class search extends FO_Plugin
     if ($CriteriaCount)
     {
       if (empty($Page)) { $Page = 0; }
-      $result = $this->GetResults($Item,$Filename,$tag,$Page,$SizeMin,$SizeMax,$searchtype,$License, $Copyright);
+      $UploadtreeRecs = $this->GetResults($Item,$Filename,$tag,$Page,$SizeMin,$SizeMax,$searchtype,$License, $Copyright);
       $html = "<hr>\n";
-      $message = _("The indented search results are same files in different folders");
-      $html .= "<H4>$message</H4>\n";
-      $text = sizeof($result[1]) . " " . _("Files matching");
+      $text = sizeof($UploadtreeRecs) . " " . _("Files matching");
       $html .= "<H2>$text " . htmlentities($Filename) . "</H2>\n";
-      $html .= $this->HTMLResults($result[0], $Page, $GETvars, $License, $Copyright);
+      $html .= $this->HTMLResults($UploadtreeRecs, $Page, $GETvars, $License, $Copyright);
       $this->vars["result"] = $html;
     }
   }
