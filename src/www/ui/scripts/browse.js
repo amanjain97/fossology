@@ -36,7 +36,7 @@ $(document).ready(function () {
     initPrioClick();
     initPrioDraw();
     $('.cc').dblclick( function (){
-        var source=table.cell(this).data();
+        var source=table.fnGetData(this);
         openCommentModal(source[0],source[1],source[2]); 
       } );
     $('select.goto-active-option').change(function() {
@@ -51,7 +51,7 @@ $(document).ready(function () {
 function initPrioClick() {
   $("td.priobucket").click(function () {
     table = createBrowseTable();
-    elementData = table.cell(this).data();
+    elementData = table.fnGetData(this);
     yourKey = elementData[0];
     if (myKey > 0 && myKey !== yourKey) {
       changePriority(myKey, yourKey);
@@ -75,7 +75,7 @@ function initPrioDraw() {
   $("td.priobucket").each(function () {
     $('.ui-tooltip').remove();
     $(this).html(function () {
-      return prioColumn(table.cell(this).data(), 'display');
+      return prioColumn(table.fnGetData(this), 'display');
     });
   });
   
@@ -116,20 +116,20 @@ function closeCommentModal() {
 
 function mysuccess() {
   var oTable = createBrowseTable();
-  oTable.draw(false);
+  oTable.fnDraw(false);
 }
 
 function mysuccess3() {
   closeCommentModal();
   var oTable = createBrowseTable();
-  oTable.draw(false);
+  oTable.fnDraw(false);
 }
 
 function mysuccess4() {
   myKey = 0;
   initPrioDraw();
   var oTable = createBrowseTable();
-  oTable.draw(false);
+  oTable.fnDraw(false);
 }
 
 function changeTableEntry(sel, uploadId, columnName) {
@@ -155,13 +155,13 @@ function changeTableEntry(sel, uploadId, columnName) {
 function filterAssignee() {
   assigneeSelected = $('#assigneeSelector').val();
   var oTable = createBrowseTable();
-  oTable.draw(false);
+  oTable.fnDraw(false);
 }
 
 function filterStatus() {
   statusSelected = $('#statusSelector').val();
   var oTable = createBrowseTable();
-  oTable.draw(false);
+  oTable.fnDraw(false);
 }
 
 function changePriority(move, beyond) {

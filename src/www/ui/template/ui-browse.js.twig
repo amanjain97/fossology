@@ -49,11 +49,12 @@ dataTableConfig =
       "iDisplayLength": 50,
       "bProcessing": true,
       "bStateSave": true,
+      "sCookiePrefix": "fossology_",
       "bRetrieve": true
     };
 
 function createBrowseTable() {
-  var otable = $('#browsetbl').DataTable(dataTableConfig);
+  var otable = $('#browsetbl').dataTable(dataTableConfig);
   return otable;
 }
 
